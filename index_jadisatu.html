@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wina Smart Cargo - Satu Halaman</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/slider.js" defer></script>
+    <script src="js/search.js" defer></script>
+    <script src="js/mobile-menu-new.js" defer></script>
+    <script src="js/dropdown.js" defer></script>
+    <script src="js/location-data.js" defer></script>
+    <script src="script.js" defer></script>
+    <style>
+      /* === SPA Page Switching === */
+      .page-section { display: none; padding: 0; }
+      .page-section.active { display: block; }
+      .page-section.active#home { padding: 0; }
+
+      /* Smooth scroll to top when switching pages */
+      html { scroll-behavior: smooth; }
+
+      /* Active nav state */
+      nav ul li a.active,
+      .desktop-nav ul li a.active,
+      .mobile-nav ul li a.active {
+        color: #0056b3;
+        font-weight: 700;
+      }
+
+      /* === Booking styles (from booking.html) === */
+      .booking-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .booking-form { display: grid; gap: 1.5rem; }
+      .form-group { margin-bottom: 1rem; }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="tel"],
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      .form-group textarea { min-height: 100px; resize: vertical; }
+      .btn-submit {
+        background-color: #0056b3;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .btn-submit:hover { background-color: #003d82; }
+      .page-title { text-align: center; color: #0056b3; margin-bottom: 2rem; }
+      .custom-input { display: none; margin-top: 0.5rem; }
+      .custom-input input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      .notification {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 9999;
+      }
+
+      /* === Mengapa Kami styles === */
+      .mk-page-header {
+        background-color: #0d6efd;
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .mk-page-header h1 { font-size: 36px; margin-bottom: 15px; }
+      .mk-page-header p {
+        font-size: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* === Forwarding styles === */
+      .forwarding-process { text-align: center; padding: 2rem 0; }
+      .forwarding-process img { max-width: 100%; height: auto; margin-bottom: 2rem; }
+      .process-steps { text-align: left; max-width: 800px; margin: 0 auto; }
+      .process-steps h3 { margin-top: 1.5rem; }
+    </style>
+  </head>
+  <body>
+    <!-- View Mode Switcher -->
+    <div class="view-mode-switcher">
+      <button class="view-mode-btn active" data-mode="desktop" title="Desktop">
+        <i class="fas fa-desktop"></i>
+      </button>
+      <button class="view-mode-btn" data-mode="tablet" title="Tablet">
+        <i class="fas fa-tablet-alt"></i>
+      </button>
+      <button class="view-mode-btn" data-mode="phone" title="Phone">
+        <i class="fas fa-mobile-alt"></i>
+      </button>
+    </div>
+
+    <header>
+      <div class="top-bar">
+        <span>Terminal Cargo T1 Bandara Juanda Surabaya | 081319610008 | Indonesia</span>
+      </div>
+      <div class="navbar">
+        <div class="logo">
+          <a href="#" onclick="showPage('home'); return false;">
+            <img src="asset/gambar.png" alt="Wina Logo" />
+          </a>
+        </div>
+
+        <!-- Search functionality -->
+        <div class="search-container">
+          <div class="search-icon">&#128269;</div>
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari layanan..." />
+            <div class="search-results"></div>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav">
+          <ul>
+            <li>
+              <a href="#" onclick="showPage('home'); return false;" class="nav-home">Beranda</a>
+            </li>
+            <li class="desktop-dropdown">
+              <button class="desktop-dropbtn">Pengiriman <span class="dropdown-arrow">&#9662;</span></button>
+              <div class="desktop-dropdown-content">
+                <a href="#" onclick="showPage('pengiriman-udara'); return false;">Pengiriman Via Udara</a>
+                <a href="#" onclick="showPage('pengiriman-darat'); return false;">Pengiriman Via Darat</a>
+                <a href="#" onclick="showPage('pengiriman-laut'); return false;">Pengiriman Via Laut</a>
+                <a href="#" onclick="showPage('forwarding'); return false;">Freight Forwarding</a>
+              </div>
+            </li>
+            <li><a href="#" onclick="showPage('dukungan'); return false;">Dukungan</a></li>
+            <li><a href="#" onclick="showPage('mengapa-kami'); return false;">Mengapa Kami</a></li>
+            <li class="desktop-booking">
+              <a href="#" onclick="showPage('booking'); return false;"><button>BOOKING</button></a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="mobile-menu-btn">
+          <span class="hamburger-char">&#8801;</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+      <div class="mobile-menu">
+        <div class="mobile-menu-header">
+          <span class="mobile-menu-close">&times;</span>
+        </div>
+        <nav class="mobile-nav">
+          <ul>
+            <li><a href="#" onclick="showPage('home'); return false;">Beranda</a></li>
+            <li class="mobile-dropdown">
+              <button class="mobile-dropbtn">Pengiriman <span class="dropdown-arrow">&#9662;</span></button>
+              <div class="mobile-dropdown-content">
+                <a href="#" onclick="showPage('pengiriman-udara'); return false;">Pengiriman Via Udara</a>
+                <a href="#" onclick="showPage('pengiriman-darat'); return false;">Pengiriman Via Darat</a>
+                <a href="#" onclick="showPage('pengiriman-laut'); return false;">Pengiriman Via Laut</a>
+                <a href="#" onclick="showPage('forwarding'); return false;">Freight Forwarding</a>
+              </div>
+            </li>
+            <li><a href="#" onclick="showPage('dukungan'); return false;">Dukungan</a></li>
+            <li><a href="#" onclick="showPage('mengapa-kami'); return false;">Mengapa Kami</a></li>
+            <li class="mobile-booking">
+              <a href="#" onclick="showPage('booking'); return false;"><button>BOOKING</button></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- END MOBILE MENU -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: HOME (Hero + Tracking) -->
+    <!-- ========================================================== -->
+    <section id="home" class="page-section active">
+      <section class="hero">
+        <div class="slider-container">
+          <div class="slider">
+            <div class="slide active">
+              <img src="asset/truck.png" alt="Truck Image" class="slider-image" />
+            </div>
+            <div class="slide">
+              <img src="asset/animasi-1.png" alt="Service Illustration" class="slider-image" />
+            </div>
+            <div class="slide">
+              <img src="asset/animasi-2.jpg" alt="Delivery Network" class="slider-image" />
+            </div>
+          </div>
+          <div class="slider-nav">
+            <button class="slider-dot active" aria-label="Show slide 1"></button>
+            <button class="slider-dot" aria-label="Show slide 2"></button>
+            <button class="slider-dot" aria-label="Show slide 3"></button>
+          </div>
+        </div>
+        <div class="truck-info-box">
+          <div class="info-item">
+            <div class="icon"><i class="fa-brands fa-whatsapp wa-icon"></i></div>
+            <div class="text">
+              <h3>WinaCargo Juanda #1 Online</h3>
+              <p>081383010008</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="icon"><i class="fa-brands fa-whatsapp wa-icon"></i></div>
+            <div class="text">
+              <h3>WinaCargo Juanda #2 Online</h3>
+              <p>0813196100008</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="icon"><i class="fa-brands fa-whatsapp wa-icon"></i></div>
+            <div class="text">
+              <h3>WinaCargo Bulusidokare Online</h3>
+              <p>0822492600008</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tracking-section">
+        <div class="container">
+          <div class="tabs">
+            <span class="active" data-tab="tracking">Cek Resi</span>
+            <span data-tab="ongkir">Cek Ongkir</span>
+            <span data-tab="promo">Promo</span>
+            <span data-tab="penawaran">Penawaran</span>
+          </div>
+
+          <div class="tracking-content active" id="tracking-content">
+            <h2>Cek Perjalanan Barang Anda di sini</h2>
+            <p>Sistem tracking real-time untuk memastikan kiriman sedang dalam perjalanan ke tempat tujuan</p>
+            <div class="tracking-form">
+              <input type="text" placeholder="Masukkan no. resi" />
+              <button>CEK RESI</button>
+            </div>
+          </div>
+
+          <div class="tracking-content" id="ongkir-content">
+            <h2>Cek Ongkir Pengiriman</h2>
+            <p>Hitung biaya pengiriman dari kota asal ke kota tujuan</p>
+            <div id="cek-ongkir" class="shipping-check-container"></div>
+          </div>
+
+          <div class="tracking-content" id="promo-content">
+            <h2>Promo Spesial</h2>
+            <p>Dapatkan penawaran menarik untuk pengiriman Anda</p>
+            <div id="cek-promo" class="shipping-check-container"></div>
+          </div>
+
+          <div class="tracking-content" id="penawaran-content">
+            <h2>Penawaran Khusus</h2>
+            <p>Dapatkan penawaran khusus untuk pengiriman Anda</p>
+            <div id="cek-penawaran" class="shipping-check-container"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+    <!-- END HOME -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: PENGIRIMAN UDARA -->
+    <!-- ========================================================== -->
+    <section id="pengiriman-udara" class="page-section">
+      <div class="page-title-separator">
+        <img src="asset/bg megamendung.png" alt="Page Separator">
+      </div>
+      <main style="padding: 2rem 5%;">
+        <h1>Pengiriman Via Udara</h1>
+        <div class="content-with-image">
+          <div class="text-content">
+            <p>Ketepatan dan kecepatan waktu pengiriman melalui udara menjadi pilihan utama, untuk pengiriman airport-to-airport sampai layanan pengiriman door-to-door. Menjadi tantangan bagi Winacargo, untuk menerima berbagai macam jenis barang kiriman melalui udara sehingga penanganan barang kiriman dapat di selesaikan dengan baik dan sampai pada lokasi tujuan dengan tepat waktu. Tim layanan udara kami, siap melayani untuk penanganan seluruh proses pengiriman, dari penanganan kelengkapan persyaratan dokumen pengiriman, dari lokasi pengiriman sampai ke lokasi tujuan. Pelayanan satu atap dapat mempermudah dan mempercepat proses pengiriman, dimana layanan Winacargo mampu bertindak secara profesional, hadir setiap saat, merespon dengan sigap, sampai penyelesaian kegiatan operasional pengiriman. Layanan customer service kami dapat memberikan perkembangan data yang akurat mengenai status pengiriman barang kiriman melalui udara. Sistem Winacargo telah menyediakan sistem layanan penggiriman pelanggan, sehingga dapat mengontrol proses pengiriman barang agar tepat waktu dan memberikan informasi real time kepada semua konsumen kami. Penyewaan pesawat cargo atau charter pesawat cargo menjadi solusi terbaik untuk pengiriman barang dengan jumlah besar dan mendesak. Layanan ini sangat cocok untuk pengiriman dengan jadwal yang ketat dan membutuhkan fleksibilitas tinggi. Winacargo menyediakan layanan sewa pesawat cargo yang dapat disesuaikan dengan kebutuhan spesifik pelanggan, mulai dari ukuran pesawat, jadwal penerbangan, hingga rute yang diinginkan.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/freight_forwarding-isometric.png" alt="Freight Forwarding">
+            <h2>Freight Forwarding</h2>
+            <p>Winacargo® mengatur transportasi, dengan mempertimbangkan jenis barang dan persyaratan pengiriman</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 3rem;">
+          <div class="text-content">
+            <p>Penyewaan pesawat cargo atau charter pesawat cargo menjadi solusi terbaik untuk pengiriman barang dengan jumlah besar dan mendesak. Layanan ini sangat cocok untuk pengiriman dengan jadwal yang ketat dan membutuhkan fleksibilitas tinggi. Winacargo menyediakan layanan sewa pesawat cargo yang dapat disesuaikan dengan kebutuhan spesifik pelanggan, mulai dari ukuran pesawat, jadwal penerbangan, hingga rute yang diinginkan.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/charter-icon.png" alt="Sewa Pesawat Cargo">
+            <h2>Sewa Pesawat Cargo</h2>
+            <p>Solusi pengiriman udara dengan fleksibilitas tinggi untuk kebutuhan kargo Anda</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 3rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container" style="text-align: center;">
+            <img src="asset/cargo_information-icon.png" alt="Informasi Cargo" style="max-width: 100px; margin-bottom: 1rem;">
+            <h2>Informasi Cargo</h2>
+            <p>Undang-undang dan Peraturan Menteri Perhubungan</p>
+          </div>
+        </div>
+
+        <h2>Layanan Pengiriman melalui udara dengan jenis pengiriman:</h2>
+        <ul>
+          <li>Port to Port (airport to airport) – Direct</li>
+          <li>Port to Port (airport to airport) - Transit</li>
+          <li>Port to Door</li>
+          <li>Door to Door</li>
+        </ul>
+
+        <h2>Produk layanan Winacargo pengiriman melalui udara</h2>
+        <ul>
+          <li>Priority Express Cargo</li>
+          <li>General Cargo</li>
+          <li>Perishable Cargo</li>
+          <li>Valuable Cargo</li>
+          <li>Pharmacy</li>
+          <li>Live Animal</li>
+          <li>Dangerous Goods</li>
+          <li>Human Remains</li>
+        </ul>
+
+        <p>Untuk layanan pengiriman dengan jarak yang lebih dekat atau tidak sesuai dengan jadwal waktu pengiriman udara, dapat juga dilakukan dengan pengiriman melalui darat dan laut, dengan berbagai macam pilihan moda transportasi yang tersedia.</p>
+
+        <h2>Untuk informasi lebih lanjut dapat menghubungi:</h2>
+        <p>No. Layanan Pengiriman Udara: +62 31 298 6251, +62 31 866 7846</p>
+
+        <p style="margin-top: 2rem;">
+          <a href="#" onclick="showPage('booking'); return false;" style="display:inline-block;background:#0056b3;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;text-decoration:none;font-weight:600;">Booking Pengiriman Udara Sekarang</a>
+        </p>
+      </main>
+    </section>
+    <!-- END PENGIRIMAN UDARA -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: PENGIRIMAN DARAT -->
+    <!-- ========================================================== -->
+    <section id="pengiriman-darat" class="page-section">
+      <div class="page-title-separator">
+        <img src="asset/bg megamendung.png" alt="Page Separator">
+      </div>
+      <main style="padding: 2rem 5%;">
+        <h1>Pengiriman Via Darat</h1>
+        <div class="content-with-image">
+          <div class="text-content">
+            <p>Percayakan pengiriman melalui darat pada Winacargo, sebagai solusi transportasi pengiriman barang, keseluruh wilayah di Indonesia. Winacargo menyediakan berbagai macam jenis moda transportasi darat, mulai dari truk kontainer, truk wing box, truk engkel, sampai kendaraan pick-up dan grand van, dengan tujuan pengiriman dalam kota, antar provinsi, dan antar pulau. Layanan pengiriman melalui darat meliputi semua jenis barang kiriman, dokumen dan paket termasuk produk dalam bentuk pallet, produk dalam bentuk kontainer, produk dengan penanganan suhu rendah (Temperature controlled), dokumen negara, surat suara dan lain sebagainya.</p>
+            <p>Efesiensi, ketepatan waktu pengiriman, harga yang kompetitif dan dengan mengikuti standar kebijakan pengiriman yang ada, Winacargo akan memberikan kualitas pengiriman terbaik untuk memenuhi kebutuhan pengiriman yang diinginkan. Pengiriman melalui darat sudah menjadi salah satu bentuk layanan yang dapat diandalkan didukung jalinan kerjasama dengan pihak transportasi darat yang terpercaya.</p>
+            <p>Pengalaman bertahun-tahun dalam menangani pengiriman barang melalui darat, menjadikan kami untuk selalu melakukan perbaikan dan memberikan pelayanan yang terbaik dan bertanggung jawab.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/warehouse-icon.png" alt="Pergudangan">
+            <h2>Pergudangan</h2>
+            <p>Winacargo® menyediakan fasilitas gudang dengan pilihan lokasi terbaik untuk kemudahan akses transportasi</p>
+          </div>
+        </div>
+
+        <h2>Moda transportasi pengiriman melalui darat:</h2>
+        <ul>
+          <li>Truk Colt Diesel</li>
+          <li>Truk Fuso Engkel</li>
+          <li>Truk Tronton</li>
+          <li>Kereta Api</li>
+          <li>Truk Wing Box</li>
+          <li>Mobil Pick-up</li>
+          <li>Grand Van</li>
+        </ul>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/project_logistic-icon.png" alt="Proyek Logistik">
+            <h2>Proyek Logistik</h2>
+            <p>Winacargo® menyediakan jasa one stop solution mulai dari mengelola proses trucking, warehousing, dan distribusi dalam satu atap</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/movement-icon.png" alt="Jasa Pindahan" style="max-width: 150px; height: auto; display: block; margin: 0 auto 1rem;">
+            <h2>Jasa Pindahan</h2>
+            <p>Winacargo® mampu memberikan jasa pindahan (movement service) yang ditunjang dengan berbagai moda transportasi</p>
+          </div>
+        </div>
+
+        <h2>Untuk informasi lebih lanjut dapat menghubungi:</h2>
+        <p>No. Layanan Pengiriman Darat: +62 31 329 1307, +62 31 329 1309</p>
+
+        <p style="margin-top: 2rem;">
+          <a href="#" onclick="showPage('booking'); return false;" style="display:inline-block;background:#0056b3;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;text-decoration:none;font-weight:600;">Booking Pengiriman Darat Sekarang</a>
+        </p>
+      </main>
+    </section>
+    <!-- END PENGIRIMAN DARAT -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: PENGIRIMAN LAUT -->
+    <!-- ========================================================== -->
+    <section id="pengiriman-laut" class="page-section">
+      <div class="page-title-separator">
+        <img src="asset/bg megamendung.png" alt="Page Separator">
+      </div>
+      <main style="padding: 2rem 5%;">
+        <h1>Pengiriman Via Laut</h1>
+        <div class="content-with-image">
+          <div class="text-content">
+            <p>Percayakan pengiriman melalui laut pada Winacargo, sebagai solusi transportasi pengiriman barang, keseluruh wilayah di Indonesia. Winacargo menyediakan berbagai macam jenis moda transportasi laut untuk pengiriman dalam negeri maupun luar negeri. Layanan pengiriman melalui laut meliputi semua jenis barang kiriman, mulai dari kontainer, barang curah, barang proyek, hingga barang dengan penanganan khusus. Dengan didukung jaringan agen pelayaran yang luas, Winacargo memastikan pengiriman barang Anda sampai ke tujuan dengan aman dan tepat waktu.</p>
+            <p>Efesiensi, ketepatan waktu pengiriman, harga yang kompetitif dan dengan mengikuti standar kebijakan pengiriman yang ada, Winacargo akan memberikan kualitas pengiriman terbaik untuk memenuhi kebutuhan pengiriman yang diinginkan. Pengiriman melalui laut sudah menjadi salah satu bentuk layanan yang dapat diandalkan didukung jalinan kerjasama dengan pihak transportasi laut yang terpercaya.</p>
+            <p>Pengalaman bertahun-tahun dalam menangani pengiriman barang melalui laut, menjadikan kami untuk selalu melakukan perbaikan dan memberikan pelayanan yang terbaik dan bertanggung jawab.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/warehouse-icon.png" alt="Pergudangan">
+            <h2>Pergudangan</h2>
+            <p>Winacargo® menyediakan fasilitas gudang dengan pilihan lokasi terbaik untuk kemudahan akses transportasi</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/project_logistic-icon.png" alt="Proyek Logistik">
+            <h2>Proyek Logistik</h2>
+            <p>Winacargo® menyediakan jasa one stop solution mulai dari mengelola proses trucking, warehousing, dan distribusi dalam satu atap</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/movement-icon.png" alt="Jasa Pindahan" style="max-width: 150px; height: auto; display: block; margin: 0 auto 1rem;">
+            <h2>Jasa Pindahan</h2>
+            <p>Winacargo® mampu memberikan jasa pindahan (movement service) yang ditunjang dengan berbagai moda transportasi</p>
+          </div>
+        </div>
+
+        <h2>Moda transportasi pengiriman melalui laut:</h2>
+        <ul>
+          <li>Kapal PELNI</li>
+          <li>Ferry Cepat (Kapal Roro)</li>
+          <li>Kapal Kontainer</li>
+        </ul>
+
+        <h2>Untuk informasi lebih lanjut dapat menghubungi:</h2>
+        <p>No. Layanan Pengiriman Laut: +62 31 329 1307, +62 31 329 1309</p>
+
+        <p style="margin-top: 2rem;">
+          <a href="#" onclick="showPage('booking'); return false;" style="display:inline-block;background:#0056b3;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;text-decoration:none;font-weight:600;">Booking Pengiriman Laut Sekarang</a>
+        </p>
+      </main>
+    </section>
+    <!-- END PENGIRIMAN LAUT -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: FREIGHT FORWARDING -->
+    <!-- ========================================================== -->
+    <section id="forwarding" class="page-section">
+      <div class="page-title-separator">
+        <img src="asset/bg megamendung.png" alt="Page Separator">
+      </div>
+      <main style="padding: 2rem 5%;">
+        <h1>Freight Forwarding</h1>
+
+        <div class="content-with-image">
+          <div class="text-content">
+            <p>Kami menyediakan layanan freight forwarding yang komprehensif untuk memastikan pengiriman barang Anda berjalan lancar dari awal hingga akhir. Berikut adalah alur proses layanan kami:</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/charter-isometric.png" alt="Penyewaan Pesawat Kargo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 1rem;">
+            <h2>Penyewaan Pesawat Kargo</h2>
+            <p>Penyewaan pesawat cargo atau charter pesawat cargo menjadi solusi terbaik untuk pengiriman yang membutuhkan kecepatan dan kapasitas besar.</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/project_logistic-icon.png" alt="Proyek Logistik" style="max-width: 150px; height: auto; display: block; margin: 0 auto 1rem;">
+            <h2>Proyek Logistik</h2>
+            <p>Winacargo® menyediakan jasa one stop solution mulai dari mengelola proses trucking, warehousing, dan distribusi dalam satu atap</p>
+          </div>
+        </div>
+
+        <div class="content-with-image" style="margin-top: 2.67rem;">
+          <div class="text-content">
+            <p style="visibility: hidden;">.</p>
+          </div>
+          <div class="image-container">
+            <img src="asset/cargo_information-icon.png" alt="Informasi Cargo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 1rem;">
+            <h2>Informasi Cargo</h2>
+            <p>Undang-undang dan Peraturan Menteri Perhubungan</p>
+          </div>
+        </div>
+
+        <div class="forwarding-process">
+          <img src="asset/proses forwarding.png" alt="Proses Freight Forwarding">
+          <div class="process-steps">
+            <h2>Alur Proses Freight Forwarding</h2>
+            <p>Kami menyediakan layanan freight forwarding yang komprehensif untuk memastikan pengiriman barang Anda berjalan lancar dari awal hingga akhir. Berikut adalah alur proses layanan kami:</p>
+
+            <h3>1. Aplikasi, Penawaran, dan Kontrak</h3>
+            <p>Proses diawali dengan pengajuan permintaan dari Anda. Kami akan memberikan penawaran harga, dan jika disetujui, kita akan menandatangani kontrak.</p>
+
+            <h3>2. Penjemputan Kargo</h3>
+            <p>Tim kami akan menjemput barang atau kargo langsung dari lokasi Anda (pabrik atau gudang).</p>
+
+            <h3>3. Penyimpanan, Pengemasan, dan Konsolidasi</h3>
+            <p>Barang akan dibawa ke gudang kami untuk disimpan, dikemas dengan aman, dan digabungkan dengan kiriman lain untuk efisiensi biaya.</p>
+
+            <h3>4. Transportasi ke Pelabuhan</h3>
+            <p>Kargo yang telah siap akan diangkut menuju pelabuhan (laut atau udara) untuk pengiriman.</p>
+
+            <h3>5. Penyelesaian Bea Cukai Ekspor</h3>
+            <p>Kami akan mengurus semua dokumen dan prosedur bea cukai agar barang Anda dapat keluar dari negara asal tanpa hambatan.</p>
+
+            <h3>6. Penyerahan ke Pihak Pengangkut</h3>
+            <p>Setelah proses bea cukai selesai, kargo diserahkan kepada maskapai pelayaran atau penerbangan untuk diangkut.</p>
+
+            <h3>7. Pelacakan Kargo</h3>
+            <p>Anda dapat memantau posisi dan status kiriman Anda secara real-time selama barang dalam perjalanan.</p>
+
+            <h3>8. Penyelesaian Bea Cukai Impor</h3>
+            <p>Setibanya di negara tujuan, kami akan menangani semua urusan bea cukai impor.</p>
+
+            <h3>9. Pengiriman ke Penerima</h3>
+            <p>Setelah semua prosedur selesai, kargo akan diangkut dari pelabuhan dan dikirimkan langsung ke alamat penerima.</p>
+          </div>
+        </div>
+
+        <p style="margin-top: 2rem;">
+          <a href="#" onclick="showPage('booking'); return false;" style="display:inline-block;background:#0056b3;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;text-decoration:none;font-weight:600;">Booking Freight Forwarding Sekarang</a>
+        </p>
+      </main>
+    </section>
+    <!-- END FORWARDING -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: MENGAPA KAMI -->
+    <!-- ========================================================== -->
+    <section id="mengapa-kami" class="page-section">
+      <div class="mk-page-header">
+        <div class="container">
+          <h1>Mengapa Memilih Kami?</h1>
+          <p>Kami memberikan pelayanan terbaik dengan komitmen untuk memuaskan pelanggan</p>
+        </div>
+      </div>
+
+      <section class="mengapa-kami-section">
+        <div class="container">
+          <div class="features-grid">
+            <div class="feature-box">
+              <div class="feature-icon">
+                <img src="asset/icon/shipping.png" alt="Pengiriman Cepat">
+              </div>
+              <h3>Pengiriman Cepat</h3>
+              <p>Proses pengiriman yang cepat dan tepat waktu ke seluruh Indonesia</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon">
+                <img src="asset/icon/quality.png" alt="Kualitas Terjamin">
+              </div>
+              <h3>Kualitas Terjamin</h3>
+              <p>Barang sampai dengan aman dan dalam kondisi baik</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon">
+                <img src="asset/icon/price.png" alt="Harga Kompetitif">
+              </div>
+              <h3>Harga Kompetitif</h3>
+              <p>Harga terjangkau dengan kualitas pelayanan terbaik</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon">
+                <img src="asset/icon/support.png" alt="Layanan 24/7">
+              </div>
+              <h3>Layanan 24/7</h3>
+              <p>Kami siap melayani Anda kapan saja</p>
+            </div>
+          </div>
+
+          <div class="additional-content" style="margin-top: 60px; text-align: center;">
+            <h2>Visi &amp; Misi Kami</h2>
+            <p style="max-width: 800px; margin: 20px auto 40px; line-height: 1.8;">
+              Kami berkomitmen untuk menjadi mitra pengiriman terpercaya dengan memberikan layanan terbaik,
+              harga kompetitif, dan solusi logistik yang inovatif untuk memenuhi kebutuhan pelanggan kami.
+            </p>
+
+            <div class="cta-section" style="margin-top: 40px; padding: 40px; background-color: #f8f9fa; border-radius: 10px;">
+              <h2>Siap Mengirim Barang Anda?</h2>
+              <p style="margin: 15px 0 25px;">Percayakan pengiriman barang Anda pada ahlinya</p>
+              <a href="#" onclick="showPage('booking'); return false;" class="cta-button" style="display: inline-block; background-color: #0d6efd; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background-color 0.3s;">
+                Booking Sekarang
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+    <!-- END MENGAPA KAMI -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: DUKUNGAN -->
+    <!-- ========================================================== -->
+    <section id="dukungan" class="page-section">
+      <section class="support-hero">
+        <div class="support-hero-content">
+          <h1>Dukungan Pelanggan</h1>
+          <p>Kami siap membantu Anda 24/7 dengan berbagai layanan dukungan</p>
+        </div>
+      </section>
+
+      <section class="quick-help">
+        <div class="container">
+          <h2>Bantuan Cepat</h2>
+          <div class="help-cards">
+            <div class="help-card">
+              <div class="help-icon">📞</div>
+              <h3>Hubungi Kami</h3>
+              <p>Layanan pelanggan 24/7</p>
+              <button class="help-btn">Telepon Sekarang</button>
+            </div>
+            <div class="help-card">
+              <div class="help-icon">💬</div>
+              <h3>Live Chat</h3>
+              <p>Chat langsung dengan CS</p>
+              <button class="help-btn">Mulai Chat</button>
+            </div>
+            <div class="help-card">
+              <div class="help-icon">📧</div>
+              <h3>Email Support</h3>
+              <p>Kirim email ke tim support</p>
+              <button class="help-btn">Kirim Email</button>
+            </div>
+            <div class="help-card">
+              <div class="help-icon">📱</div>
+              <h3>WhatsApp</h3>
+              <p>Hubungi via WhatsApp</p>
+              <button class="help-btn">WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="container">
+          <h2>Pertanyaan yang Sering Diajukan</h2>
+          <div class="faq-container">
+            <div class="faq-item">
+              <div class="faq-question">
+                <h3>Bagaimana cara melacak paket saya?</h3>
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                <p>Anda dapat melacak paket dengan memasukkan nomor resi di halaman tracking kami. Sistem akan menampilkan status real-time pengiriman Anda.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <h3>Berapa lama waktu pengiriman?</h3>
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                <p>Waktu pengiriman bervariasi tergantung lokasi tujuan dan jenis layanan yang dipilih. Umumnya 1-3 hari untuk dalam kota dan 3-7 hari untuk antar kota.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <h3>Apakah ada asuransi untuk paket?</h3>
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                <p>Ya, kami menyediakan asuransi pengiriman untuk melindungi paket Anda. Anda dapat memilih tingkat asuransi sesuai nilai barang.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <h3>Bagaimana jika paket rusak atau hilang?</h3>
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                <p>Jika paket rusak atau hilang, segera hubungi customer service kami. Kami akan membantu proses klaim asuransi dan penggantian.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <h3>Apakah ada layanan pengiriman khusus?</h3>
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                <p>Ya, kami menyediakan layanan khusus seperti pengiriman dingin, pengiriman berharga, dan pengiriman besar dengan handling khusus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section">
+        <div class="container">
+          <h2>Hubungi Kami</h2>
+          <div class="contact-content">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div class="contact-details">
+                  <h3>Telepon</h3>
+                  <p>+62 21 1234 5678</p>
+                  <p>+62 811 2345 6789</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-details">
+                  <h3>Email</h3>
+                  <p>info@winacargo.co.id</p>
+                  <p>support@winacargo.co.id</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-details">
+                  <h3>Alamat</h3>
+                  <p>Jl. Sudirman No. 123</p>
+                  <p>Jakarta Pusat, 12345</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">🕒</div>
+                <div class="contact-details">
+                  <h3>Jam Operasional</h3>
+                  <p>Senin - Jumat: 08:00 - 18:00</p>
+                  <p>Sabtu: 08:00 - 15:00</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-form">
+              <h3>Kirim Pesan</h3>
+              <form onsubmit="event.preventDefault(); alert('Pesan Anda telah dikirim. Tim kami akan menghubungi Anda segera.');">
+                <div class="form-group">
+                  <input type="text" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="form-group">
+                  <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                  <input type="tel" placeholder="Nomor Telepon" required>
+                </div>
+                <div class="form-group">
+                  <select required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="tracking">Tracking Paket</option>
+                    <option value="complaint">Keluhan</option>
+                    <option value="information">Informasi Layanan</option>
+                    <option value="other">Lainnya</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <textarea placeholder="Pesan Anda" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Kirim Pesan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+    <!-- END DUKUNGAN -->
+
+    <!-- ========================================================== -->
+    <!-- PAGE: BOOKING -->
+    <!-- ========================================================== -->
+    <section id="booking" class="page-section">
+      <div class="page-title-separator">
+        <img src="asset/bg megamendung.png" alt="Page Separator">
+      </div>
+
+      <main class="booking-container">
+        <h1 class="page-title">Form Pemesanan Pengiriman</h1>
+        <form id="shippingForm" class="booking-form" onsubmit="return validateForm()">
+          <div class="form-group">
+            <label for="recipientName">Nama Penerima</label>
+            <input type="text" id="recipientName" name="recipientName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="province">Provinsi</label>
+            <select id="province" name="province" required>
+              <option value="">-- Pilih Provinsi --</option>
+            </select>
+            <div id="customProvinceInput" class="custom-input">
+              <input type="text" id="customProvince" name="customProvince" placeholder="Masukkan nama provinsi">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="city">Kota/Kabupaten</label>
+            <select id="city" name="city" required disabled>
+              <option value="">-- Pilih Kota/Kabupaten --</option>
+            </select>
+            <div id="customCityInput" class="custom-input">
+              <input type="text" id="customCity" name="customCity" placeholder="Masukkan nama kota/kabupaten">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="recipientAddress">Alamat Lengkap</label>
+            <textarea id="recipientAddress" name="recipientAddress" placeholder="Masukkan nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="recipientPhone">No. Telepon Penerima</label>
+            <input type="tel" id="recipientPhone" name="recipientPhone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="shippingMethod">Metode Pengiriman</label>
+            <select id="shippingMethod" name="shippingMethod" required>
+              <option value="">-- Pilih Metode Pengiriman --</option>
+              <option value="udara">Pengiriman Udara</option>
+              <option value="darat">Pengiriman Darat</option>
+              <option value="laut">Pengiriman Laut</option>
+              <option value="forwarding">Freight Forwarding</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-submit">Pesan Sekarang</button>
+        </form>
+      </main>
+
+      <div id="bookingNotification" class="notification">
+        Pesanan Anda telah berhasil dibuat!
+      </div>
+    </section>
+    <!-- END BOOKING -->
+
+    <!-- ========================================================== -->
+    <!-- FOOTER -->
+    <!-- ========================================================== -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <img src="asset/gambar.png" alt="Wina Smart Cargo">
+          </div>
+          <div class="footer-contact">
+            <p><i class="fas fa-map-marker-alt"></i> Jl. Raya Bandara Juanda, Terminal Kargo T1, Surabaya</p>
+            <p><i class="fas fa-phone"></i> 081319610008</p>
+            <p><i class="fas fa-envelope"></i> info@winasmartcargo.com</p>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h3>Layanan Kami</h3>
+          <ul>
+            <li><a href="#" onclick="showPage('pengiriman-udara'); return false;">Pengiriman Udara</a></li>
+            <li><a href="#" onclick="showPage('pengiriman-darat'); return false;">Pengiriman Darat</a></li>
+            <li><a href="#" onclick="showPage('pengiriman-laut'); return false;">Pengiriman Laut</a></li>
+            <li><a href="#" onclick="showPage('forwarding'); return false;">Freight Forwarding</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h3>Perusahaan</h3>
+          <ul>
+            <li><a href="#" onclick="showPage('mengapa-kami'); return false;">Mengapa Memilih Kami</a></li>
+            <li><a href="#">Galeri</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-newsletter">
+          <h3>Newsletter</h3>
+          <p>Dapatkan informasi terbaru tentang layanan dan promo kami</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Terima kasih telah berlangganan newsletter kami!');">
+            <input type="email" placeholder="Alamat email Anda" required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+          <div class="social-links">
+            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 PT. Wina Smart Cargo. Semua Hak Dilindungi.</p>
+      </div>
+    </footer>
+
+    <!-- ========================================================== -->
+    <!-- SPA NAVIGATION SCRIPT -->
+    <!-- ========================================================== -->
+    <script>
+      /**
+       * Fungsi utama untuk berpindah antar "halaman" (section) dalam satu file HTML.
+       * @param {string} pageId - id dari section yang ingin ditampilkan
+       * @param {string} [method] - optional: metode pengiriman untuk booking (udara|darat|laut|forwarding)
+       */
+      function showPage(pageId, method) {
+        // Sembunyikan semua section
+        var sections = document.querySelectorAll('.page-section');
+        sections.forEach(function(s) { s.classList.remove('active'); });
+
+        // Tampilkan section yang dipilih
+        var target = document.getElementById(pageId);
+        if (target) {
+          target.classList.add('active');
+        }
+
+        // Update URL hash agar bisa di-bookmark / di-share
+        if (history.pushState) {
+          history.pushState({ page: pageId }, '', '#' + pageId);
+        } else {
+          window.location.hash = pageId;
+        }
+
+        // Jika target adalah booking dan ada method, pre-select metode pengiriman
+        if (pageId === 'booking' && method) {
+          try {
+            var select = document.getElementById('shippingMethod');
+            if (select) {
+              var opt = select.querySelector('option[value="' + method + '"]');
+              if (opt) opt.selected = true;
+            }
+          } catch (e) {}
+        }
+
+        // Update highlight navigasi (opsional)
+        updateNavActive(pageId);
+
+        // Scroll ke atas
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Tutup mobile menu jika sedang terbuka
+        var overlay = document.querySelector('.mobile-menu-overlay');
+        if (overlay && overlay.classList.contains('active')) {
+          overlay.classList.remove('active');
+        }
+      }
+
+      function updateNavActive(pageId) {
+        // Hapus semua kelas active dari link navigasi
+        var navLinks = document.querySelectorAll('nav a, .desktop-nav a, .mobile-nav a');
+        navLinks.forEach(function(l) { l.classList.remove('active'); });
+
+        // Tandai link yang sesuai dengan halaman aktif (best-effort)
+        try {
+          var matching = document.querySelectorAll('a[onclick*="showPage(\'' + pageId + '\')"]');
+          matching.forEach(function(m) { m.classList.add('active'); });
+        } catch (e) {}
+      }
+
+      /**
+       * Saat halaman dimuat, cek URL hash untuk menentukan section mana yang aktif.
+       * Contoh: index_jadisatu.html#booking akan langsung membuka section booking.
+       */
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inisialisasi shipping check components (jika ShippingCheck tersedia)
+        if (typeof ShippingCheck === 'function') {
+          try {
+            new ShippingCheck('cek-ongkir', {
+              buttonText: 'CEK ONGKIR',
+              onSubmit: async (data) => { console.log('Checking ongkir:', data); }
+            });
+            new ShippingCheck('cek-promo', {
+              buttonText: 'CEK PROMO',
+              showWeight: false,
+              onSubmit: async (data) => { console.log('Checking promo:', data); }
+            });
+            new ShippingCheck('cek-penawaran', {
+              buttonText: 'CEK PENAWARAN',
+              showWeight: false,
+              onSubmit: async (data) => { console.log('Checking penawaran:', data); }
+            });
+          } catch (e) {
+            console.warn('ShippingCheck init skipped:', e);
+          }
+        }
+
+        // Tab switching di section tracking (home page)
+        var tabs = document.querySelectorAll('.tabs span');
+        var contents = document.querySelectorAll('.tracking-content');
+        tabs.forEach(function(tab) {
+          tab.addEventListener('click', function() {
+            tabs.forEach(function(t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var target = tab.getAttribute('data-tab');
+            contents.forEach(function(c) { c.classList.remove('active'); });
+            var targetEl = document.getElementById(target + '-content');
+            if (targetEl) targetEl.classList.add('active');
+          });
+        });
+
+        // FAQ accordion (dukungan)
+        var faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(function(item) {
+          var question = item.querySelector('.faq-question');
+          if (question) {
+            question.addEventListener('click', function() {
+              item.classList.toggle('open');
+              var answer = item.querySelector('.faq-answer');
+              var toggle = item.querySelector('.faq-toggle');
+              if (answer) {
+                if (item.classList.contains('open')) {
+                  answer.style.display = 'block';
+                  if (toggle) toggle.textContent = '−';
+                } else {
+                  answer.style.display = 'none';
+                  if (toggle) toggle.textContent = '+';
+                }
+              }
+            });
+          }
+        });
+        // Sembunyikan semua jawaban FAQ di awal
+        document.querySelectorAll('.faq-answer').forEach(function(a) { a.style.display = 'none'; });
+
+        // Cek URL hash untuk navigasi langsung
+        var hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(hash)) {
+          showPage(hash);
+        } else {
+          // Default: tampilkan home
+          updateNavActive('home');
+        }
+
+        // Tombol view mode switcher (demo only - hanya visual)
+        var viewBtns = document.querySelectorAll('.view-mode-btn[data-mode]');
+        viewBtns.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            viewBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            document.body.classList.remove('phone-view', 'tablet-view');
+            if (btn.dataset.mode === 'phone') document.body.classList.add('phone-view');
+            if (btn.dataset.mode === 'tablet') document.body.classList.add('tablet-view');
+          });
+        });
+      });
+
+      // Handle browser back/forward
+      window.addEventListener('popstate', function() {
+        var hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(hash)) {
+          showPage(hash);
+        } else {
+          showPage('home');
+        }
+      });
+
+      /**
+       * Tampilkan notifikasi booking
+       */
+      function showNotification() {
+        var notification = document.getElementById('bookingNotification');
+        if (notification) {
+          notification.style.display = 'block';
+          setTimeout(function() {
+            notification.style.display = 'none';
+          }, 3000);
+        }
+      }
+
+      /**
+       * Validasi form booking - tampilkan notifikasi, prevent submit
+       */
+      function validateForm() {
+        showNotification();
+        return false;
+      }
+    </script>
+  </body>
+</html>
